@@ -29,7 +29,7 @@ jobs:
     - name: Run the application
       run: ./app
 
-    - name: Deploy to GitHub pages
+    - name: Deploy
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
