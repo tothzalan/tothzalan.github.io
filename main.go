@@ -54,6 +54,7 @@ func main() {
 			if err != nil {
 				return err
 			}
+			fmt.Printf("Created %v\n", outputFileName)
 
 			indexData.Articles = append(indexData.Articles, ArticleData{
 				Title: strings.TrimSuffix(info.Name(), ".md"),
@@ -78,6 +79,7 @@ func main() {
 	}
 	defer indexFile.Close()
 
+	fmt.Printf("Index data: %v\n", indexData)
 	err = mainTmpl.Execute(indexFile, indexData)
 	if err != nil {
 		panic(err)
