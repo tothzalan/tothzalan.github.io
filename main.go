@@ -26,7 +26,7 @@ func main() {
 	}
 
 	articlesDir := "articles"
-	outputDir := "dist/articles"
+	outputDir := "dist"
 	indexData := IndexPageData{}
 
 	err = os.MkdirAll(outputDir, os.ModePerm)
@@ -54,11 +54,12 @@ func main() {
 			if err != nil {
 				return err
 			}
+
 			fmt.Printf("Created %v\n", outputFileName)
 
 			indexData.Articles = append(indexData.Articles, ArticleData{
 				Title: strings.TrimSuffix(info.Name(), ".md"),
-				Link:  filepath.Join("articles", outputFileName),
+				Link:  outputFileName,
 			})
 		}
 		return nil
@@ -67,19 +68,15 @@ func main() {
 		panic(err)
 	}
 
-	indexOutputFile := "dist/index.html"
-	err = os.MkdirAll(filepath.Dir(indexOutputFile), os.ModePerm)
-	if err != nil {
-		panic(err)
-	}
-
+	indexOutputFile := filepath.Join(outputDir, "index.html")
 	indexFile, err := os.Create(indexOutputFile)
 	if err != nil {
 		panic(err)
 	}
 	defer indexFile.Close()
 
-	fmt.Printf("Index data: %v\n", indexData)
+	fmt.Printf("Index data: %+v\n", indexData)
+
 	err = mainTmpl.Execute(indexFile, indexData)
 	if err != nil {
 		panic(err)
