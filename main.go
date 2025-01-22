@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/gomarkdown/markdown"
@@ -17,6 +18,12 @@ type ArticleData struct {
 
 type IndexPageData struct {
 	Articles []ArticleData
+}
+
+func splitByCapital(input string) string {
+	re := regexp.MustCompile(`[A-Z][^A-Z]*`)
+	words := re.FindAllString(input, -1)
+	return strings.Join(words, " ")
 }
 
 func main() {
@@ -58,7 +65,7 @@ func main() {
 			fmt.Printf("Created %v\n", outputFileName)
 
 			indexData.Articles = append(indexData.Articles, ArticleData{
-				Title: strings.TrimSuffix(info.Name(), ".md"),
+				Title: splitByCapital(strings.TrimSuffix(info.Name(), ".md")),
 				Link:  outputFileName,
 			})
 		}
